@@ -1,0 +1,5 @@
+node:
+  image: bitnami/node
+  command: npm start
+  volumes:
+    - .:/app

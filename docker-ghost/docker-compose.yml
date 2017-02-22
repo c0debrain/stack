@@ -1,0 +1,25 @@
+version: '2'
+services:
+
+  mariadb:
+    image: bitnami/mariadb
+    environment:
+      - MARIADB_DATABASE=ghost
+      - MARIADB_ROOT_PASSWORD=my-password
+
+  ghost:
+    image: bitnami/node:6
+    links:
+      - mariadb:mariadb
+    volumes:
+      - ./ghost:/app
+    command: "sh -c 'npm install --production && npm start --production'"
+
+  nginx:
+    image: bitnami/nginx
+    links:
+      - ghost:ghost
+    ports:
+      - 80:80
+    volumes:
+      - ./nginx-vhost:/bitnami/nginx/conf/vhosts
